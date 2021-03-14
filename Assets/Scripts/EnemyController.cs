@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] float movespeed;
+    [SerializeField] float moveSpeed;
     [SerializeField] float padding;
+    [SerializeField] float moveSpeedIncrease;
     
-    private enum Direction { LEFT, RIGHT , DOWN}
+    public enum Direction { LEFT, RIGHT}
     private Direction dir;
     private float xMin;
     private float xMax;
+    public bool atEdge;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,23 +22,21 @@ public class EnemyController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        Move();
+    { 
     }
 
-    void Move()
+    public void Move()
     {
         if (dir == Direction.LEFT)
         {
-            transform.position -= new Vector3(movespeed, 0, 0);
+            transform.position -= new Vector3(moveSpeed*Time.deltaTime, 0, 0);
         } else if (dir == Direction.RIGHT)
         {
-            transform.position += new Vector3(movespeed, 0, 0);
+            transform.position += new Vector3(moveSpeed*Time.deltaTime, 0, 0);
         }
         if (transform.position.x <= xMin || transform.position.x >= xMax)
         {
-            ChangeDirection();
-            Debug.Log("Change Dir");
+            atEdge = true;
         }
     }
 
@@ -48,10 +48,8 @@ public class EnemyController : MonoBehaviour
         xMax = gameCamera.ViewportToWorldPoint(new Vector3(1, 0, 0)).x - padding;
     }
 
-    private void ChangeDirection()
+    public void ChangeDirection()
     {
-        transform.position -= new Vector3(0, 0.5f, 0);
-        movespeed += 0.0005f;
         if (dir == Direction.LEFT)
         {
             dir = Direction.RIGHT;
@@ -59,6 +57,12 @@ public class EnemyController : MonoBehaviour
         {
             dir = Direction.LEFT;
         }
+        atEdge = false;
     }
 
+
+    public Direction GetDirection()
+    {
+        return dir;
+    }
 }

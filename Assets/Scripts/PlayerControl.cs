@@ -32,7 +32,7 @@ public class PlayerControl : MonoBehaviour
 
         //clamps positions
         var newXPos = Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);
-        transform.position = new Vector2(newXPos, -4.5f);
+        transform.position = new Vector2(newXPos, -4f);
     }
 
     private void SetUpMoveBoundaries()
