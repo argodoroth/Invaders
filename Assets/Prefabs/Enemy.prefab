@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 7621569644746201125}
   - component: {fileID: 6520600842520711355}
   - component: {fileID: 2946755523882314220}
-  - component: {fileID: 1832263790}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
@@ -102,6 +101,10 @@ MonoBehaviour:
   moveSpeed: 1
   padding: 0.3
   moveSpeedIncrease: 0.5
+  projectile: {fileID: 9139101281750823773, guid: 1e75091cafd4af24b90063e122b4e718,
+    type: 3}
+  projectileSpeed: 10
+  atEdge: 0
 --- !u!60 &7621569644746201125
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -181,15 +184,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab45ea130a125fb44a37cc6b95df288f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1832263790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4207422949296235067}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab45ea130a125fb44a37cc6b95df288f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  lives: 1

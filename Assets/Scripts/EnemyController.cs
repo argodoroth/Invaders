@@ -7,7 +7,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float moveSpeed;
     [SerializeField] float padding;
     [SerializeField] float moveSpeedIncrease;
-    
+    [SerializeField] GameObject projectile;
+    [SerializeField] int projectileSpeed = -10;
+
     public enum Direction { LEFT, RIGHT}
     private Direction dir;
     private float xMin;
@@ -20,11 +22,7 @@ public class EnemyController : MonoBehaviour
         SetUpMoveBoundaries();
     }
 
-    // Update is called once per frame
-    void Update()
-    { 
-    }
-
+    //Will
     public void Move()
     {
         if (dir == Direction.LEFT)
@@ -40,6 +38,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    //Restricts enemy movement to within the screens boundaries
     private void SetUpMoveBoundaries()
     {
         //converts from the cameras relative values to game scene actual values
@@ -58,11 +57,21 @@ public class EnemyController : MonoBehaviour
             dir = Direction.LEFT;
         }
         atEdge = false;
+        moveSpeed += moveSpeedIncrease;
     }
 
 
     public Direction GetDirection()
     {
         return dir;
+    }
+
+    public void Fire()
+    {
+        GameObject laser = Instantiate(
+                projectile,
+                transform.position,
+                Quaternion.identity) as GameObject;
+        laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
     }
 }
