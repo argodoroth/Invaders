@@ -20,7 +20,7 @@ public class EnemyGroupController : MonoBehaviour
         enemies = new List<EnemyController>(GetComponentsInChildren<EnemyController>());
         //sets time between shots and next shooter
         shotCounter = UnityEngine.Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
-        nextShooter = UnityEngine.Random.Range(0, enemies.Count);
+        nextShooter = UnityEngine.Random.Range(0, enemies.Count -1);
     }
 
     // Update is called once per frame
@@ -88,14 +88,14 @@ public class EnemyGroupController : MonoBehaviour
             //checks to see if next shooter has been killed
             if (!enemies[nextShooter])
             {
-                nextShooter = UnityEngine.Random.Range(0, enemies.Count);
+                nextShooter = UnityEngine.Random.Range(0, enemies.Count - 1);
                 enemies[nextShooter].Fire();
             } else
             {
                 enemies[nextShooter].Fire();
             }
             shotCounter = UnityEngine.Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
-            nextShooter = UnityEngine.Random.Range(0, enemies.Count);
+            nextShooter = UnityEngine.Random.Range(0, enemies.Count - 1);
         }
     }
 }

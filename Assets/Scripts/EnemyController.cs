@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    [Header("Enemy Movement")]
     [SerializeField] float moveSpeed;
     [SerializeField] float padding;
     [SerializeField] float moveSpeedIncrease;
+
+    [Header("Enemy Projectiles")]
     [SerializeField] GameObject projectile;
     [SerializeField] int projectileSpeed = -10;
+
+    [Header("Other")]
+    [SerializeField] int score = 50;
 
     public enum Direction { LEFT, RIGHT}
     private Direction dir;
@@ -79,6 +85,6 @@ public class EnemyController : MonoBehaviour
 
     public void OnDestroy()
     {
-        scoreControl.IncreaseScore(50);
+        scoreControl.IncreaseScore(score);
     }
 }

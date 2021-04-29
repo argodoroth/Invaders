@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class DestructionComponent : MonoBehaviour
 {
-    [SerializeField] int lives = 1;
+    private LivesController lives = null;
+
+    private void Start()
+    {
+        if (gameObject.GetComponent<PlayerControl>())
+        {
+            lives = FindObjectOfType<LivesController>();
+        }
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         DestructionComponent enemy = other.gameObject.GetComponent<DestructionComponent>();
@@ -12,17 +20,19 @@ public class DestructionComponent : MonoBehaviour
         enemy.ProcessHit();
     }
 
-    private void OnDestroy()
-    {
-        //Debug.Log("Destroyed");
-    }
-
     public void ProcessHit()
     {
-        lives -= 1;
-        if (lives <= 0)
+        if (gameObject.GetComponent<PlayerControl>())
         {
-            Destroy(gameObject);
+            lives.DecreaseLives(1);
+        } else
+        {
+            Die();
         }
+    }
+
+    public void Die()
+    {
+        Destroy(gameObject);
     }
 }
