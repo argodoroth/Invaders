@@ -71,6 +71,8 @@ public class EnemyGroupController : MonoBehaviour
             }
         }
     }
+
+    //Will move towards specified down point
     private void MoveDown(float finalY)
     {
         Vector3 finalVector = new Vector3(this.transform.position.x, finalY, this.transform.position.z);
@@ -87,8 +89,11 @@ public class EnemyGroupController : MonoBehaviour
             if (!enemies[nextShooter])
             {
                 nextShooter = UnityEngine.Random.Range(0, enemies.Count);
+                enemies[nextShooter].Fire();
+            } else
+            {
+                enemies[nextShooter].Fire();
             }
-            enemies[nextShooter].Fire();
             shotCounter = UnityEngine.Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
             nextShooter = UnityEngine.Random.Range(0, enemies.Count);
         }

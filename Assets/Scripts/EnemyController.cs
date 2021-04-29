@@ -15,11 +15,13 @@ public class EnemyController : MonoBehaviour
     private float xMin;
     private float xMax;
     public bool atEdge;
+    private ScoreController scoreControl;
     // Start is called before the first frame update
     void Start()
     {
         dir = Direction.LEFT;
         SetUpMoveBoundaries();
+        scoreControl = FindObjectOfType<ScoreController>();
     }
 
     //Will
@@ -73,5 +75,10 @@ public class EnemyController : MonoBehaviour
                 transform.position,
                 Quaternion.identity) as GameObject;
         laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
+    }
+
+    public void OnDestroy()
+    {
+        scoreControl.IncreaseScore(50);
     }
 }
