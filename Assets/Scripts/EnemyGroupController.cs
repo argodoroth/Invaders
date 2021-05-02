@@ -66,6 +66,10 @@ public class EnemyGroupController : MonoBehaviour
                 //when all units moved downwards, will change direction
                 for (int i = 0; i < enemies.Count; i++)
                 {
+                    if (!enemies[i])
+                    {
+                        enemies.RemoveAt(i);
+                    }
                     enemies[i].ChangeDirection();
                 }
             }

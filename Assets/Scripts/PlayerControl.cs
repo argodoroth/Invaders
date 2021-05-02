@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 5f;
+    [Header("Movement")]
+    [SerializeField] public float moveSpeed = 5f;
     [SerializeField] float padding = 0.6f;
+    [SerializeField] float yHeight = -4f;
+
     [SerializeField] GameObject projectile;
-    [SerializeField] float projectileSpeed = 10;
+    [SerializeField] public float projectileSpeed = 10;
 
     float xMin;
     float xMax;
@@ -32,7 +35,7 @@ public class PlayerControl : MonoBehaviour
 
         //clamps positions
         var newXPos = Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);
-        transform.position = new Vector2(newXPos, -4f);
+        transform.position = new Vector2(newXPos, yHeight);
     }
 
     private void SetUpMoveBoundaries()

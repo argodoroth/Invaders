@@ -98,12 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64b007588b2e5654cb55173110261cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 0.75
   padding: 0.3
-  moveSpeedIncrease: 0.5
+  moveSpeedIncrease: 0.25
   projectile: {fileID: 9139101281750823773, guid: 1e75091cafd4af24b90063e122b4e718,
     type: 3}
-  projectileSpeed: 10
+  projectileSpeed: -10
+  score: 50
   atEdge: 0
 --- !u!60 &7621569644746201125
 PolygonCollider2D:
@@ -184,4 +185,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab45ea130a125fb44a37cc6b95df288f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lives: 1

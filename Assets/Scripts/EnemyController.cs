@@ -40,7 +40,7 @@ public class EnemyController : MonoBehaviour
         {
             transform.position += new Vector3(moveSpeed*Time.deltaTime, 0, 0);
         }
-        if (transform.position.x <= xMin || transform.position.x >= xMax)
+        if (transform.position.x <= xMin || transform.position.x >= xMax && !atEdge)
         {
             atEdge = true;
         }
@@ -64,8 +64,10 @@ public class EnemyController : MonoBehaviour
         {
             dir = Direction.LEFT;
         }
-        atEdge = false;
         moveSpeed += moveSpeedIncrease;
+        //moves away from edge and sets at edge to false
+        Move();
+        atEdge = false;
     }
 
 
