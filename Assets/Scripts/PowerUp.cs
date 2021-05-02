@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class PowerUp : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
+    [SerializeField] float moveSpeed = 2f;
     public abstract void Activate();
 
     protected void Drop()
@@ -15,5 +15,10 @@ public abstract class PowerUp : MonoBehaviour
     protected PowerUpController GetPowerUpController()
     {
         return FindObjectOfType<PowerUpController>();
+    }
+
+    protected void Update()
+    {
+        Drop();
     }
 }
