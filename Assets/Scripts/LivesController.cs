@@ -36,4 +36,9 @@ public class LivesController : MonoBehaviour
             FindObjectOfType<PlayerControl>().GetComponent<DestructionComponent>().Die();
         }
     }
+
+    public int GetLives()
+    {
+        return lives;
+    }
 }

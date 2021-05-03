@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TutorialState { START, HASMOVED, HASFIRED, BARRIERDESTROYED, FIREUP,LIFEUP,SPEEDUP,SPEEDSTOP, ENEMYDESTROYED, END}
+public enum TutorialState { START, HASMOVED, HASFIRED, FIREUP,LIFEUP,SPEEDUP,SPEEDSTOP, ENEMYSPAWN, END}
 public class TutorialManager : MonoBehaviour
 {
     [SerializeField] Canvas[] stages;
@@ -13,13 +13,16 @@ public class TutorialManager : MonoBehaviour
     private EnemyController[] enemies;
     private EnemyGroupController enemyGroup;
     private PlayerControl player;
-    
+    private LivesController lives;
+
     private TutorialState curStage;
     private int currentCanvas = 0;
     private int totalBarriers;
     private int totalEnemies;
     private float initialSpeed;
     private float initialProjectileSpeed;
+    private float initialLives;
+    private bool usedPowerup = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,8 @@ public class TutorialManager : MonoBehaviour
         barriers = FindObjectsOfType<DestructibleBarrier>();
         enemyGroup = FindObjectOfType<EnemyGroupController>();
         player = FindObjectOfType<PlayerControl>();
+        lives = FindObjectOfType<LivesController>();
+        initialLives = lives.GetLives();
 
         initialSpeed = player.moveSpeed;
         initialProjectileSpeed = player.projectileSpeed;
@@ -68,6 +73,7 @@ public class TutorialManager : MonoBehaviour
     {
         for (int i = 0; i < newActive.Length; i++)
         {
+            Debug.Log("activate:" + i);
             newActive[i].gameObject.SetActive(true);
         }
     }
@@ -85,19 +91,20 @@ public class TutorialManager : MonoBehaviour
             case TutorialState.HASFIRED:
                 SwitchAfterBarrierDestroyed();
                 break;
-            case TutorialState.BARRIERDESTROYED:
-                SwithToPowerUps();
-                break;
             case TutorialState.FIREUP:
                 CreateFireUp();
                 break;
             case TutorialState.LIFEUP:
+                CreateLifeUp();
                 break;
             case TutorialState.SPEEDUP:
+                CreateSpeedUp();
                 break;
             case TutorialState.SPEEDSTOP:
+                CreateSpeedStop();
                 break;
-            case TutorialState.ENEMYDESTROYED:
+            case TutorialState.ENEMYSPAWN:
+                WaitForEnemyKilled();
                 break;
             case TutorialState.END:
                 break;
@@ -129,35 +136,88 @@ public class TutorialManager : MonoBehaviour
         {
             if (!barriers[i])
             {
-                curStage = TutorialState.BARRIERDESTROYED;
-                StartCoroutine(SwapStages(1));
+                curStage = TutorialState.FIREUP;
+                usedPowerup = true;
+                StartCoroutine(SwapStages(1f));
             }
         }
     }
 
-    private void SwithToPowerUps()
-    {
-        curStage = TutorialState.FIREUP;
-        StartCoroutine(SwapStages(3));
-    }
-
     private void CreateFireUp()
     {
-        if (!FindObjectOfType<PowerUp>())
+        if (!FindObjectOfType<PowerUp>() && !usedPowerup)
         {
             SpawnPowerup(0);
         }
-        //curStage = TutorialState.SPEEDUP;
-        //StartCoroutine(SwapStages(7));
+        if (player.projectileSpeed > initialProjectileSpeed)
+        {
+            curStage = TutorialState.LIFEUP;
+            usedPowerup = true;
+            StartCoroutine(SwapStages(4f));
+        }
+    }
+
+    private void CreateLifeUp()
+    {
+        if (!FindObjectOfType<PowerUp>() && !usedPowerup)
+        {
+            SpawnPowerup(1);
+        }
+        if (lives.GetLives() > initialLives)
+        {
+            usedPowerup = true;
+            curStage = TutorialState.SPEEDUP;
+            StartCoroutine(SwapStages(4f));
+        }
+    }
+
+    private void CreateSpeedUp()
+    {
+        if (!FindObjectOfType<PowerUp>() && !usedPowerup)
+        {
+            SpawnPowerup(2);
+        }
+        if (player.moveSpeed > initialSpeed)
+        {
+            usedPowerup = true;
+            curStage = TutorialState.SPEEDSTOP;
+            StartCoroutine(SwapStages(4f));
+        }
+    }
+
+    private void CreateSpeedStop()
+    {
+        if (!FindObjectOfType<PowerUp>() && !usedPowerup)
+        {
+            SpawnPowerup(3);
+        }
+        if (player.moveSpeed < initialSpeed)
+        {
+            usedPowerup = true;
+            curStage = TutorialState.ENEMYSPAWN;
+            StartCoroutine(SwapStages(4f));
+            StartCoroutine(WaitActivateEnemies(4f));
+        }
     }
 
     private void SpawnPowerup(int index)
     {
-        Debug.Log("spawning");
         GameObject powerUp = Instantiate(
                powerUps[index],
                powerUpSpawnPoint,
                Quaternion.identity) as GameObject;
+    }
+
+    private void WaitForEnemyKilled()
+    {
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if (!enemies[i])
+            {
+                curStage = TutorialState.END;
+                StartCoroutine(SwapStages(1f));
+            }
+        }
     }
     private IEnumerator SwapStages(float wait)
     {
@@ -166,11 +226,20 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         stages[currentCanvas+1].gameObject.SetActive(true);
         currentCanvas += 1;
+        usedPowerup = false;
     }
 
     private IEnumerator WaitActivate(Component[] comps, float wait)
     {
         yield return new WaitForSeconds(wait);
         ActivateObjects(comps);
+    }
+
+    private IEnumerator WaitActivateEnemies(float wait)
+    {
+        Debug.Log("Activate");
+        yield return new WaitForSeconds(wait);
+        enemyGroup.gameObject.SetActive(true);
+        ActivateObjects(enemies);
     }
 }

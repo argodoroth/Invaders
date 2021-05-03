@@ -349,6 +349,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Elements
       objectReference: {fileID: 0}
+    - target: {fileID: 355110607184092891, guid: 0fb9ee028ce1b944c8d8f61755bfc170,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fb9ee028ce1b944c8d8f61755bfc170, type: 3}
 --- !u!1001 &1270198853859919141
@@ -550,6 +555,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2538248735572269379, guid: f6aef62111c1af04d86988e93d97eb1b,
+        type: 3}
+      propertyPath: minTimeBetweenSpawns
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2538248735572269379, guid: f6aef62111c1af04d86988e93d97eb1b,
+        type: 3}
+      propertyPath: maxTimeBetweenSpawns
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2538248735572269380, guid: f6aef62111c1af04d86988e93d97eb1b,
         type: 3}
