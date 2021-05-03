@@ -12,6 +12,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] GameObject projectile;
     [SerializeField] public float projectileSpeed = 10;
 
+    private bool canFire = true;
     float xMin;
     float xMax;
     Coroutine firingCoroutine;
@@ -21,6 +22,23 @@ public class PlayerControl : MonoBehaviour
         SetUpMoveBoundaries();
     }
 
+    private void OnEnable()
+    {
+        Projectile.OnProjectileDeath += ChangeFire;
+    }
+    private void OnDisable()
+    {
+        Projectile.OnProjectileDeath += ChangeFire;
+    }
+
+    private void ChangeFire(bool isPlayer)
+    {
+        if (isPlayer)
+        {
+            canFire = true;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -28,6 +46,7 @@ public class PlayerControl : MonoBehaviour
         Fire();
     }
 
+    //Moves the player
     private void Move()
     {
         //Uses default buttons for axis, makes frame independent by using .deltaTime
@@ -38,6 +57,7 @@ public class PlayerControl : MonoBehaviour
         transform.position = new Vector2(newXPos, yHeight);
     }
 
+    //Prevents the player from moving offscreen
     private void SetUpMoveBoundaries()
     {
         //converts from the cameras relative values to game scene actual values
@@ -47,6 +67,7 @@ public class PlayerControl : MonoBehaviour
         xMax = gameCamera.ViewportToWorldPoint(new Vector3(1, 0, 0)).x - padding;
     }
 
+    //Will repeatedly fire while space button is held down, and stop when lifted
     private void Fire()
     {
         if (Input.GetButtonDown("Fire1"))
@@ -63,12 +84,17 @@ public class PlayerControl : MonoBehaviour
     {
         while (true)
         {
-            GameObject laser = Instantiate(
-                projectile,
-                transform.position,
-                Quaternion.identity) as GameObject;
-            laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
-            while (laser)
+            if (canFire)
+            {
+                GameObject laser = Instantiate(
+                    projectile,
+                    transform.position,
+                    Quaternion.identity) as GameObject;
+                laser.GetComponent<Projectile>().PlayerFired();
+                laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
+                canFire = false;
+            }
+            while (!canFire)
             {
                 yield return null;
             }
