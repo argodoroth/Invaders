@@ -31,7 +31,10 @@ public class PowerUpController : MonoBehaviour
 
     void Update()
     {
-        CountDownAndSpawn();
+        if (powerUps.Length > 0)
+        {
+            CountDownAndSpawn();
+        }
     }
 
     private void CountDownAndSpawn()
