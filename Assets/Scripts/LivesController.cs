@@ -37,6 +37,7 @@ public class LivesController : MonoBehaviour
         if (lives <=0)
         {
             FindObjectOfType<PlayerControl>().GetComponent<DestructionComponent>().Die();
+            session.LoadMenu(MenuState.GAMEOVER);
         }
     }
 

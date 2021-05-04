@@ -15,10 +15,12 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(WaitThenLoad("Tutorial Scene", 2f));
     }
 
-    public void LoadMenu()
+    public void LoadMenu(float wait)
     {
-        StartCoroutine(WaitThenLoad("Main Menu", 6f));
+        StartCoroutine(WaitThenLoad("Main Menu", wait));
     }
+
+
 
     private IEnumerator WaitThenLoad(string scene, float time)
     {

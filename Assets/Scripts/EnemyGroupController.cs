@@ -14,10 +14,12 @@ public class EnemyGroupController : MonoBehaviour
     private float downPos = 0;
     private float shotCounter;
     private int nextShooter;
+    private GameSession session;
     // Start is called before the first frame update
     void Start()
     {
         enemies = new List<EnemyController>(GetComponentsInChildren<EnemyController>());
+        session = FindObjectOfType<GameSession>();
         //sets time between shots and next shooter
         shotCounter = UnityEngine.Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
         nextShooter = UnityEngine.Random.Range(0, enemies.Count -1);
@@ -26,8 +28,14 @@ public class EnemyGroupController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveGroup();
-        CountDownAndShoot();
+        if (enemies.Count > 0)
+        {
+            MoveGroup();
+            CountDownAndShoot();
+        } else
+        {
+            session.LoadMenu(MenuState.CONTINUELEVEL);
+        }
     }
 
     //Moves all of the enemies as a group

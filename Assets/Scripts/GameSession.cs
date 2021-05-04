@@ -30,6 +30,7 @@ public class GameSession : MonoBehaviour
 
     public void LoadMenu(MenuState state)
     {
+        float wait = 6f;
         if (isGame)
         {
             currentLevel += 1;
@@ -37,10 +38,12 @@ public class GameSession : MonoBehaviour
             LivesController lives = FindObjectOfType<LivesController>();
             currentScore = score.GetScore();
             currentLives = lives.GetLives();
+            wait = 3f;
         }
+        isGame = false;
         sceneLoader = FindObjectOfType<SceneLoader>();
         currentMenu = state;
-        sceneLoader.LoadMenu();
+        sceneLoader.LoadMenu(wait);
     }
     public int GetLives()
     {

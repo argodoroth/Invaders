@@ -24,6 +24,10 @@ public class Menu : MonoBehaviour
         session = FindObjectOfType<GameSession>();
         curStage = session.GetMenu();
         sceneLoader = FindObjectOfType<SceneLoader>();
+        if (curStage == MenuState.GAMEOVER || curStage == MenuState.CONTINUELEVEL)
+        {
+
+        }
         StartCoroutine(FullFadeIn(findList(curStage), 1.5f));
         DeactivateOtherStates();
     }
@@ -39,7 +43,6 @@ public class Menu : MonoBehaviour
         session.SetGame(true);
         StartCoroutine(FullFadeOut(findList(curStage), 1.5f));
         sceneLoader.LoadGame();
-        //SwitchStage(MenuState.SECONDSTATE);
     }
 
 
