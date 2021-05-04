@@ -3568,12 +3568,17 @@ PrefabInstance:
     - target: {fileID: 5687518382527196805, guid: 5d401128be50e864ea558554092f8ea1,
         type: 3}
       propertyPath: currentMenu
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5687518382527196805, guid: 5d401128be50e864ea558554092f8ea1,
         type: 3}
       propertyPath: currentLives
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5687518382527196805, guid: 5d401128be50e864ea558554092f8ea1,
+        type: 3}
+      propertyPath: currentScore
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 5687518382527196810, guid: 5d401128be50e864ea558554092f8ea1,
         type: 3}

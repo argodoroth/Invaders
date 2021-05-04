@@ -26,7 +26,7 @@ public class Menu : MonoBehaviour
         sceneLoader = FindObjectOfType<SceneLoader>();
         if (curStage == MenuState.GAMEOVER || curStage == MenuState.CONTINUELEVEL)
         {
-
+            PopulateScore();
         }
         StartCoroutine(FullFadeIn(findList(curStage), 1.5f));
         DeactivateOtherStates();
@@ -162,6 +162,19 @@ public class Menu : MonoBehaviour
         {
             ChangeAlpha(objs, i/tranisitionTime);
             yield return null;
+        }
+    }
+
+    public void PopulateScore()
+    {
+        TMP_Text[] texts = FindObjectsOfType<TMP_Text>();
+        for (int i = 0; i < texts.Length; i++)
+        {
+            Debug.Log(texts[i].name);
+            if (texts[i].name == "Score Field")
+            {
+                texts[i].text = "" + session.GetScore();
+            }
         }
     }
 }
