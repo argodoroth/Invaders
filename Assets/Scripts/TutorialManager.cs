@@ -14,7 +14,7 @@ public class TutorialManager : MonoBehaviour
     private EnemyGroupController enemyGroup;
     private PlayerControl player;
     private LivesController lives;
-    private SceneLoader sceneLoader;
+    private GameSession session;
 
     private TutorialState curStage;
     private int currentCanvas = 0;
@@ -33,9 +33,9 @@ public class TutorialManager : MonoBehaviour
         enemyGroup = FindObjectOfType<EnemyGroupController>();
         player = FindObjectOfType<PlayerControl>();
         lives = FindObjectOfType<LivesController>();
-        sceneLoader = FindObjectOfType<SceneLoader>();
+        session = FindObjectOfType<GameSession>();
 
-
+        session.SetGame(false);
         initialLives = lives.GetLives();
         initialSpeed = player.moveSpeed;
         initialProjectileSpeed = player.projectileSpeed;
@@ -110,7 +110,7 @@ public class TutorialManager : MonoBehaviour
                 WaitForEnemyKilled();
                 break;
             case TutorialState.END:
-                sceneLoader.LoadMenu(MenuState.MAINMENU);
+                session.LoadMenu(MenuState.MAINMENU);
                 break;
         }
     }

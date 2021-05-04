@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System;
+
 public enum MenuState { MAINMENU, SECONDSTATE, GAMEOVER, CONTINUELEVEL, CREDITS}
 public class Menu : MonoBehaviour
 {
@@ -12,15 +14,18 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject[] gameOverElements;
     [SerializeField] GameObject[] continueElements;
     [SerializeField] GameObject[] creditsElements;
-    [SerializeField] int num;
 
-    SceneLoader sceneLoader;
-    MenuState curStage = MenuState.MAINMENU;
+    private SceneLoader sceneLoader;
+    private MenuState curStage = MenuState.MAINMENU;
+    private GameSession session;
 
     private void Start()
     {
+        session = FindObjectOfType<GameSession>();
+        curStage = session.GetMenu();
         sceneLoader = FindObjectOfType<SceneLoader>();
         StartCoroutine(FullFadeIn(findList(curStage), 1.5f));
+        DeactivateOtherStates();
     }
     
     public void TutorialButton()
@@ -31,7 +36,10 @@ public class Menu : MonoBehaviour
 
     public void PlayButton()
     {
-        SwitchStage(MenuState.SECONDSTATE);
+        session.SetGame(true);
+        StartCoroutine(FullFadeOut(findList(curStage), 1.5f));
+        sceneLoader.LoadGame();
+        //SwitchStage(MenuState.SECONDSTATE);
     }
 
 
@@ -108,6 +116,21 @@ public class Menu : MonoBehaviour
                 break;
         }
         return list;
+    }
+
+    private void DeactivateOtherStates()
+    {
+        foreach (MenuState state in Enum.GetValues(typeof(MenuState)))
+        {
+            if (state != curStage)
+            {
+                GameObject[] list = findList(state);
+                for (int i = 0; i < list.Length; i++)
+                {
+                    list[i].SetActive(false);
+                }
+            }
+        }
     }
     private IEnumerator FullFadeOut(GameObject[] objs, float tranisitionTime)
     {

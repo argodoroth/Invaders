@@ -7,7 +7,7 @@ public class SceneLoader : MonoBehaviour
 {
     public void LoadGame()
     {
-        SceneManager.LoadScene("Battle Scene");
+        StartCoroutine(WaitThenLoad("Battle Scene", 2f));
     }
 
     public void LoadTutorial()
@@ -15,7 +15,7 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(WaitThenLoad("Tutorial Scene", 2f));
     }
 
-    public void LoadMenu(MenuState state)
+    public void LoadMenu()
     {
         StartCoroutine(WaitThenLoad("Main Menu", 6f));
     }

@@ -8,8 +8,11 @@ public class LivesController : MonoBehaviour
 {
     private int lives = 3;
     private TextMeshProUGUI livesText;
+    private GameSession session;
     void Start()
     {
+        session = FindObjectOfType<GameSession>();
+        lives = session.GetLives();
         TextMeshProUGUI[] texts = FindObjectsOfType<TextMeshProUGUI>();
         for (int i = 0; i < texts.Length; i++)
         {
