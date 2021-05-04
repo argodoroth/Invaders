@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Controls each enemy entity
 public class EnemyController : MonoBehaviour
 {
     [Header("Enemy Movement")]
@@ -30,7 +31,7 @@ public class EnemyController : MonoBehaviour
         scoreControl = FindObjectOfType<ScoreController>();
     }
 
-    //Will
+    //Will make each enemy move until they reach the edge of the game
     public void Move()
     {
         if (dir == Direction.LEFT)
@@ -55,6 +56,7 @@ public class EnemyController : MonoBehaviour
         xMax = gameCamera.ViewportToWorldPoint(new Vector3(1, 0, 0)).x - padding;
     }
 
+    //switch direction of movement
     public void ChangeDirection()
     {
         if (dir == Direction.LEFT)
@@ -70,12 +72,13 @@ public class EnemyController : MonoBehaviour
         atEdge = false;
     }
 
-
+    //Return current direction
     public Direction GetDirection()
     {
         return dir;
     }
 
+    //fire off a laser
     public void Fire()
     {
         GameObject laser = Instantiate(
@@ -85,6 +88,7 @@ public class EnemyController : MonoBehaviour
         laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
     }
 
+    //increases player score when defeated
     public void OnDestroy()
     {
         scoreControl.IncreaseScore(score);

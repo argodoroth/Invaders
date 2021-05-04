@@ -3,18 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Tells player if a fired projectile has been destroyed
 public class Projectile : MonoBehaviour
 {
     private bool isPlayerFired = false;
     public static event Action<bool> OnProjectileDeath;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
+    //Alerts player when projectile has been destroyed
     private void OnDestroy()
     {
-        OnProjectileDeath?.Invoke(true);
+        OnProjectileDeath?.Invoke(isPlayerFired);
     }
 
     public void PlayerFired()

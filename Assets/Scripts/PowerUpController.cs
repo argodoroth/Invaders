@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Releases random powerups at different intervals in random positions
 public class PowerUpController : MonoBehaviour
 {
-
     [SerializeField] float minTimeBetweenSpawns;
     [SerializeField] float maxTimeBetweenSpawns;
     [SerializeField] GameObject[] powerUps;
@@ -17,6 +17,7 @@ public class PowerUpController : MonoBehaviour
     private float initialPlayerMoveSpeed;
     private float initialPlayerFireSpeed;
 
+    //Establish objects and variables
     private void Start()
     {
         player = FindObjectOfType<PlayerControl>();
@@ -28,7 +29,7 @@ public class PowerUpController : MonoBehaviour
     }
 
 
-
+    //Will repeatedly spawn powerups
     void Update()
     {
         if (powerUps.Length > 0)
@@ -37,6 +38,7 @@ public class PowerUpController : MonoBehaviour
         }
     }
 
+    //Counts down until it is time to spawn
     private void CountDownAndSpawn()
     {
         spawnCounter -= Time.deltaTime;  //reduces countdown by time it took to execute frame
@@ -46,6 +48,8 @@ public class PowerUpController : MonoBehaviour
             spawnCounter = UnityEngine.Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
         }
     }
+
+    //Spawns random powerup at random point in camera range
     private void SpawnRandomPowerUp()
     {
         int rand = UnityEngine.Random.Range(0, powerUps.Length);
@@ -83,6 +87,7 @@ public class PowerUpController : MonoBehaviour
         StartCoroutine(LivesUp());
     }
 
+    //Change speed value for player
     private IEnumerator SpeedUp(float inc)
     {
         player.moveSpeed += inc;
@@ -92,6 +97,7 @@ public class PowerUpController : MonoBehaviour
         playerRender.color = initalPlayerColor;
     }
 
+    //Change fire speed
     private IEnumerator FireUp(float inc)
     {
         player.projectileSpeed += inc;
@@ -101,6 +107,7 @@ public class PowerUpController : MonoBehaviour
         playerRender.color = initalPlayerColor;
     }
 
+    //Increase lives
     private IEnumerator LivesUp()
     {
         LivesController lives = FindObjectOfType<LivesController>();
@@ -110,6 +117,7 @@ public class PowerUpController : MonoBehaviour
         playerRender.color = initalPlayerColor;
     }
 
+    //Reduce speed to 0
     private IEnumerator SpeedStop()
     {
         player.moveSpeed = 0;

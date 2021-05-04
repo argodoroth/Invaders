@@ -9,6 +9,7 @@ public class LivesController : MonoBehaviour
     private int lives = 3;
     private TextMeshProUGUI livesText;
     private GameSession session;
+    //Gets lives from the game session
     void Start()
     {
         session = FindObjectOfType<GameSession>();
@@ -23,6 +24,7 @@ public class LivesController : MonoBehaviour
         }
         livesText.text = "x" + lives.ToString();
     }
+
 
     public void IncreaseLives(int increase)
     {

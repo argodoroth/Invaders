@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Simple class to hold save data
 [System.Serializable]
 public class SaveData
 {

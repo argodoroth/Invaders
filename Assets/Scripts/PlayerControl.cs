@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Controls all of the player's movements and firing
 public class PlayerControl : MonoBehaviour
 {
     [Header("Movement")]
@@ -22,6 +23,7 @@ public class PlayerControl : MonoBehaviour
         SetUpMoveBoundaries();
     }
 
+    //Activates listener for bullet destruction event
     private void OnEnable()
     {
         Projectile.OnProjectileDeath += ChangeFire;
@@ -31,6 +33,7 @@ public class PlayerControl : MonoBehaviour
         Projectile.OnProjectileDeath += ChangeFire;
     }
 
+    //Allows the player to fire another projectile once the first is destroyed
     private void ChangeFire(bool isPlayer)
     {
         if (isPlayer)
@@ -80,6 +83,7 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    //Repeatedly fire while space held down
     private IEnumerator RepeatFire()
     {
         while (true)

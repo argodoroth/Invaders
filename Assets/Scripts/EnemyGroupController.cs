@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Controls all enemies in the scene
 public class EnemyGroupController : MonoBehaviour
 {
     [SerializeField] float downMoveSpeed;
@@ -35,6 +36,7 @@ public class EnemyGroupController : MonoBehaviour
             CountDownAndShoot();
         } else
         {
+            //when all enemies defeated will advance scenes
             session.LoadMenu(MenuState.CONTINUELEVEL);
         }
     }
@@ -112,10 +114,11 @@ public class EnemyGroupController : MonoBehaviour
         }
     }
 
+    //increases fire speed each level
     private void AdjustFireSpeed()
     {
         int x = session.GetLevel();
         minTimeBetweenShots = Mathf.Max(minTimeBetweenShots - (x * 0.05f), 0.1f);
-        maxTimeBetweenShots = Mathf.Max(minTimeBetweenShots - (x * 0.05f), 0.3f);
+        maxTimeBetweenShots = Mathf.Max(maxTimeBetweenShots - (x * 0.05f), 0.3f);
     }
 }

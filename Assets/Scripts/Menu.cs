@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
+//Manages all the menu panes and buttons
+//Enums list different panes
 public enum MenuState { MAINMENU, SECONDSTATE, GAMEOVER, CONTINUELEVEL, CREDITS}
 public class Menu : MonoBehaviour
 {
@@ -26,6 +28,7 @@ public class Menu : MonoBehaviour
     private MenuState curStage = MenuState.MAINMENU;
     private GameSession session;
 
+    //Remove other panes so only active is being shown
     private void Start()
     {
         session = FindObjectOfType<GameSession>();
@@ -39,6 +42,7 @@ public class Menu : MonoBehaviour
         DeactivateOtherStates();
     }
     
+    //Load different scenes and set different values for each button
     public void TutorialButton()
     {
         StartCoroutine(FullFadeOut(mainElements, 1.5f));
@@ -93,6 +97,7 @@ public class Menu : MonoBehaviour
         PopulateProfile(3);
     }
 
+    //Displays all the save data for each profile
     private void PopulateProfile(int i)
     {
         SaveData save = SaveGameSystem.LoadGame("Profile" + i);
@@ -113,11 +118,12 @@ public class Menu : MonoBehaviour
             temp[3].text = "" + save.currentScore;
     }
 
+    //Slowly turn objects invisible or visible by changing alpha values in object colour
     public void ChangeAlpha(GameObject[] obj, float change)
     {
         for (int i = 0; i < obj.Length; i++)
         {
-
+            //different changes for text and images/buttons
             if (obj[i].GetComponent<Image>())
             {
                 Color col = obj[i].GetComponent<Image>().color;
@@ -134,6 +140,7 @@ public class Menu : MonoBehaviour
         }
     }
 
+    //return current opacity of an object
     public float CheckOpacity(GameObject[] obj)
     {
         float x = 0;
@@ -153,6 +160,7 @@ public class Menu : MonoBehaviour
         return x;
     }
 
+    //Switch between panes with a fade
     public void SwitchStage(MenuState tarStage)
     {
         GameObject[] startlist = findList(curStage);
@@ -162,6 +170,7 @@ public class Menu : MonoBehaviour
         curStage = tarStage;
     }
 
+    //Find which objects are needed for current pane
     private GameObject[] findList(MenuState state)
     {
         GameObject[] list;
@@ -189,6 +198,7 @@ public class Menu : MonoBehaviour
         return list;
     }
 
+    //Hide all panes other than active stage
     private void DeactivateOtherStates()
     {
         foreach (MenuState state in Enum.GetValues(typeof(MenuState)))
@@ -203,6 +213,8 @@ public class Menu : MonoBehaviour
             }
         }
     }
+
+
     private IEnumerator FullFadeOut(GameObject[] objs, float tranisitionTime)
     {
         for (float i = 0; i < tranisitionTime; i+= Time.deltaTime)

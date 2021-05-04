@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Carries data between scenes, and keeps information on the curent game session
 public class GameSession : MonoBehaviour
 {
     [SerializeField] bool isGame;
@@ -14,6 +15,8 @@ public class GameSession : MonoBehaviour
 
     private SceneLoader sceneLoader;
     private EnemyGroupController enemies;
+
+    //Singleton pattern
     private void Awake()
     {
         int gameStatusCount = FindObjectsOfType<GameSession>().Length;
@@ -29,6 +32,7 @@ public class GameSession : MonoBehaviour
         }
     }
 
+    //Will load back to menu screen and grab all data from the current scene before transitioning if not tutorial
     public void LoadMenu(MenuState state)
     {
         float wait = 6f;
@@ -47,6 +51,7 @@ public class GameSession : MonoBehaviour
         sceneLoader.LoadMenu(wait);
     }
 
+    //Save values from current session
     public void SaveValues()
     {
         SaveData save = new SaveData();
@@ -58,6 +63,7 @@ public class GameSession : MonoBehaviour
         SaveGameSystem.SaveGame(save, "Profile" + currentPlayer);
     }
 
+    //Check highscore and reset all other vals
     public void ResetSave()
     {
         SaveData save = new SaveData();
@@ -69,6 +75,7 @@ public class GameSession : MonoBehaviour
         SaveGameSystem.SaveGame(save, "Profile" + currentPlayer);
     }
 
+    //Load values from save into current session
     public void LoadValues()
     {
         SaveData load = SaveGameSystem.LoadGame("Profile" + currentPlayer);
@@ -77,10 +84,13 @@ public class GameSession : MonoBehaviour
         currentScore = load.currentScore;
     }
 
+    //set which player profile is active
     public void SetPlayer(int i)
     {
         currentPlayer = i;
     }
+
+    //Getters and setters
     public int GetLives()
     {
         return currentLives;
