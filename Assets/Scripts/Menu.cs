@@ -4,24 +4,36 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-public enum MenuState { BASESTATE, SECONDSTATE, THIRDSTATE}
+public enum MenuState { MAINMENU, SECONDSTATE, GAMEOVER, CONTINUELEVEL, CREDITS}
 public class Menu : MonoBehaviour
 {
-    [SerializeField] GameObject[] baseStateElements;
+    [SerializeField] GameObject[] mainElements;
     [SerializeField] GameObject[] secondStateElements;
-    [SerializeField] GameObject[] thirdStateElements;
+    [SerializeField] GameObject[] gameOverElements;
+    [SerializeField] GameObject[] continueElements;
+    [SerializeField] GameObject[] creditsElements;
     [SerializeField] int num;
-    MenuState curStage = MenuState.BASESTATE;
-    MenuState tarStage = MenuState.SECONDSTATE;
+
+    SceneLoader sceneLoader;
+    MenuState curStage = MenuState.MAINMENU;
 
     private void Start()
     {
-        StartCoroutine(FullFadeIn(baseStateElements, 1.5f));
+        sceneLoader = FindObjectOfType<SceneLoader>();
+        StartCoroutine(FullFadeIn(findList(curStage), 1.5f));
     }
-    public void LoadGame()
+    
+    public void TutorialButton()
     {
-        SceneManager.LoadScene("Battle Scene");
+        StartCoroutine(FullFadeOut(mainElements, 1.5f));
+        sceneLoader.LoadTutorial();
     }
+
+    public void PlayButton()
+    {
+        SwitchStage(MenuState.SECONDSTATE);
+    }
+
 
     public void ChangeAlpha(GameObject[] obj, float change)
     {
@@ -63,48 +75,66 @@ public class Menu : MonoBehaviour
         return x;
     }
 
-    public void SwitchStage()
+    public void SwitchStage(MenuState tarStage)
     {
-        GameObject[] startlist;
-        GameObject[] endlist;
-        switch (curStage)
-        {
-            case MenuState.BASESTATE:
-                break;
-            case MenuState.SECONDSTATE:
-                break;
-            case MenuState.THIRDSTATE:
-                break;
-        }
-        switch (tarStage)
-        {
-            case MenuState.BASESTATE:
-                break;
-            case MenuState.SECONDSTATE:
-                break;
-            case MenuState.THIRDSTATE:
-                break;
-        }
-        StartCoroutine(FullFadeOut(baseStateElements, 1.5f));
-        StartCoroutine(FullFadeIn(secondStateElements, 1.5f));
+        GameObject[] startlist = findList(curStage);
+        GameObject[] endlist = findList(tarStage);
+        StartCoroutine(FullFadeOut(startlist, 1.5f));
+        StartCoroutine(FullFadeIn(endlist, 1.5f));
     }
 
+    private GameObject[] findList(MenuState state)
+    {
+        GameObject[] list;
+        switch (state)
+        {
+            case MenuState.MAINMENU:
+                list = mainElements;
+                break;
+            case MenuState.SECONDSTATE:
+                list = secondStateElements;
+                break;
+            case MenuState.GAMEOVER:
+                list = gameOverElements;
+                break;
+            case MenuState.CONTINUELEVEL:
+                list = continueElements;
+                break;
+            case MenuState.CREDITS:
+                list = creditsElements;
+                break;
+            default:
+                list = mainElements;
+                break;
+        }
+        return list;
+    }
     private IEnumerator FullFadeOut(GameObject[] objs, float tranisitionTime)
     {
         for (float i = 0; i < tranisitionTime; i+= Time.deltaTime)
         {
             ChangeAlpha(objs, 1 - i/tranisitionTime);
-            Debug.Log(i);
             yield return null;
+        }
+        if (CheckOpacity(objs) <= 0.005f)
+        {
+            
+            for (int i = 0; i < objs.Length; i++)
+            {
+                objs[i].SetActive(false);
+            }
         }
     }
 
     private IEnumerator FullFadeIn(GameObject[] objs, float tranisitionTime)
     {
+        for (int i = 0; i < objs.Length; i++)
+        {
+            objs[i].SetActive(true);
+        }
         for (float i = 0; i < tranisitionTime; i += Time.deltaTime)
         {
             ChangeAlpha(objs, i/tranisitionTime);
-            Debug.Log(i);
             yield return null;
         }
     }
