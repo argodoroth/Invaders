@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Class to control the moving background
 public class BackgroundScroller : MonoBehaviour
 {
     [SerializeField] float scrollSpeed = 0.5f;

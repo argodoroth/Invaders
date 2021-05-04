@@ -21,6 +21,7 @@ public class EnemyGroupController : MonoBehaviour
         enemies = new List<EnemyController>(GetComponentsInChildren<EnemyController>());
         session = FindObjectOfType<GameSession>();
         //sets time between shots and next shooter
+        AdjustFireSpeed();
         shotCounter = UnityEngine.Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
         nextShooter = UnityEngine.Random.Range(0, enemies.Count -1);
     }
@@ -109,5 +110,12 @@ public class EnemyGroupController : MonoBehaviour
             shotCounter = UnityEngine.Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
             nextShooter = UnityEngine.Random.Range(0, enemies.Count - 1);
         }
+    }
+
+    private void AdjustFireSpeed()
+    {
+        int x = session.GetLevel();
+        minTimeBetweenShots = Mathf.Max(minTimeBetweenShots - (x * 0.05f), 0.1f);
+        maxTimeBetweenShots = Mathf.Max(minTimeBetweenShots - (x * 0.05f), 0.3f);
     }
 }

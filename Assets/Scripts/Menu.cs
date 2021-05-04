@@ -9,11 +9,18 @@ using System;
 public enum MenuState { MAINMENU, SECONDSTATE, GAMEOVER, CONTINUELEVEL, CREDITS}
 public class Menu : MonoBehaviour
 {
+    //List of objects to appear for each state
     [SerializeField] GameObject[] mainElements;
     [SerializeField] GameObject[] secondStateElements;
     [SerializeField] GameObject[] gameOverElements;
     [SerializeField] GameObject[] continueElements;
     [SerializeField] GameObject[] creditsElements;
+
+    //Accessible fields to display save data for profiles
+    [SerializeField] TMP_Text[] profile1Display;
+    [SerializeField] TMP_Text[] profile2Display;
+    [SerializeField] TMP_Text[] profile3Display;
+
 
     private SceneLoader sceneLoader;
     private MenuState curStage = MenuState.MAINMENU;
@@ -45,6 +52,66 @@ public class Menu : MonoBehaviour
         sceneLoader.LoadGame();
     }
 
+    public void ProfileButton(int i)
+    {
+        session.SetPlayer(i);
+        session.LoadValues();
+        session.SetGame(true);
+        StartCoroutine(FullFadeOut(findList(curStage), 1.5f));
+        sceneLoader.LoadGame();
+    }
+
+    public void SaveButton()
+    {
+        session.SetGame(true);
+        session.SaveValues();
+        StartCoroutine(FullFadeOut(findList(curStage), 1.5f));
+        sceneLoader.LoadGame();
+    }
+
+    public void GameOver()
+    {
+        session.ResetSave();
+        MainMenu();
+    }
+
+    public void SaveQuit()
+    {
+        session.SaveValues();
+        MainMenu();
+    }
+    public void MainMenu()
+    {
+        SwitchStage(MenuState.MAINMENU);
+    }
+
+    public void ProfileSelect()
+    {
+        SwitchStage(MenuState.SECONDSTATE);
+        PopulateProfile(1);
+        PopulateProfile(2);
+        PopulateProfile(3);
+    }
+
+    private void PopulateProfile(int i)
+    {
+        SaveData save = SaveGameSystem.LoadGame("Profile" + i);
+        TMP_Text[] temp = null;
+        if (i == 1)
+        {
+            temp = profile1Display;
+        } else if (i == 2)
+        {
+            temp = profile2Display;
+        } else
+        {
+            temp = profile3Display;
+        }
+            temp[0].text = "" + save.highscore;
+            temp[1].text = "" + save.currentLevel;
+            temp[2].text = "" + save.currentLives;
+            temp[3].text = "" + save.currentScore;
+    }
 
     public void ChangeAlpha(GameObject[] obj, float change)
     {
@@ -92,6 +159,7 @@ public class Menu : MonoBehaviour
         GameObject[] endlist = findList(tarStage);
         StartCoroutine(FullFadeOut(startlist, 1.5f));
         StartCoroutine(FullFadeIn(endlist, 1.5f));
+        curStage = tarStage;
     }
 
     private GameObject[] findList(MenuState state)
@@ -170,7 +238,6 @@ public class Menu : MonoBehaviour
         TMP_Text[] texts = FindObjectsOfType<TMP_Text>();
         for (int i = 0; i < texts.Length; i++)
         {
-            Debug.Log(texts[i].name);
             if (texts[i].name == "Score Field")
             {
                 texts[i].text = "" + session.GetScore();
